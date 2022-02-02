@@ -17,7 +17,9 @@ What it can do:
 * put it all together in PXE menu
 
 
-
+#Install
+Scrip was tested on Debian 11  
+Just download and run `install.sh` 
 
 >This script is in Polish language  
 >English version in progress
