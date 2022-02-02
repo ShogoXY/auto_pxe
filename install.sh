@@ -40,9 +40,20 @@ for i in `seq 1 9`;
 
 
 sudo apt-get update
-sudo apt-get -y install syslinux-common syslinux-efi isc-dhcp-server tftpd-hpa pxelinux network-manager gcp lighttpd nfs-kernel-server ufw
+sudo apt-get -y install\ 
+git\
+syslinux-common\
+syslinux-efi\
+isc-dhcp-server\
+tftpd-hpa\
+pxelinux\
+network-manager\
+gcp\
+lighttpd\
+nfs-kernel-server
 
 
+gti
 
 bash ./scrip/dhcp.sh
 bash ./scrip/tftp.sh
