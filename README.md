@@ -19,7 +19,11 @@ What it can do:
 
 #Install
 Scrip was tested on Debian 11  
-Just download and run `install.sh` 
-
+Just download and run 
+```
+git clone https://github.com/ShogoXY/auto_pxe
+cd auto_pxe
+./install.sh 
+```
 >This script is in Polish language  
 >English version in progress
