@@ -17,7 +17,7 @@ What it can do:
 * put it all together in PXE menu
 
 
-#Install
+# Install
 Scrip was tested on Debian 11  
 Just download and run 
 ```
