@@ -58,7 +58,8 @@ ini=$(ls /mnt/live/ |grep initrd)
 #echo $vm
 #echo $ini
 sudo umount /mnt
-printf "/srv/tftp/iso/$folder	192.168.0.0/24(ro,no_root_squash,no_subtree_check)" |sudo tee -a /etc/exports >> /dev/null
+printf "/srv/tftp/iso/$folder	192.168.0.0/24(ro,no_root_squash,no_subtree_check)
+" |sudo tee -a /etc/exports >> /dev/null
 sudo exports -av
 
 echo "plik został rozpakowany do folderu /srv/tftp/iso/$folder"
