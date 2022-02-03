@@ -1,5 +1,8 @@
 #!/bin/bash
-
+echo ""
+echo ""
+echo "Proszę wybrać która wersja systemu ma być pobrana"
+echo ""
 a1=$(lynx -dump -listonly https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-1.*.iso'|sed "s|https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/||g"|cut -c 7-)
 
 a2=$(lynx -dump -listonly https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/ |uniq -f 1|grep 'https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/firmware-1.*.iso'|sed "s|https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/||g"|cut -c 7-)
@@ -11,7 +14,7 @@ link2=$(lynx -dump -listonly https://cdimage.debian.org/cdimage/unofficial/non-f
 echo -e "\t 1 " $a1 
 echo -e "\t 2 " $a2
 echo ""
-echo "Proszę podać wartość 1 lub 2"
+echo "Podaj wartość 1 lub 2"
 
 while read -r deb
 do
