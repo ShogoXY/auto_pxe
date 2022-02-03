@@ -58,7 +58,7 @@ UI menu.c32
 
 LABEL Debian net
         MENU LABEL ^1. Debian
-        KERNEL iso/debiannet/install.amd/vmlinuz
+        KERNEL iso/debian-net/install.amd/vmlinuz
         append initrd=iso/debian-net/install.amd/initrd.gz
 " | sudo tee /srv/tftp/pxelinux.cfg/default >> /dev/null
 
