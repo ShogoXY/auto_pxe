@@ -41,13 +41,13 @@ printf "
 #	Separate multiple interfaces with spaces, e.g. \"eth0 eth1\".
 INTERFACESv4=\"$dev\"
 INTERFACESv6=\"\"
-" |tee -a /etc/default/isc-dhcp-server > /dev/null
+" |sudo tee /etc/default/isc-dhcp-server >> /dev/null
 
-sudo sed -i -e 's|/var/www/html"/srv/tftp"g' /etc/lighttpd/lighttpd.conf    
+sudo sed -i -e 's|/var/www/html"|/srv/tftp"|g' /etc/lighttpd/lighttpd.conf    
 sudo sed -i -e 's/RPCMOUNTDOPTS/#RPCMOUNTDOPTS/g' /etc/default/nfs-kernel-server
 sudo sed -i -e '/#RPCMOUNTDOPTS/a RPCMOUNTDOPTS="-p 40000"' /etc/default/nfs-kernel-server
-sudo echo "/srv/tftp/iso/debian	192.168.0.0/24(ro,no_root_squash,no_subtree_check)" >> /etc/exports
-
+printf "/srv/tftp/iso/debian-net	192.168.0.0/24(ro,no_root_squash,no_subtree_check)" |sudo tee -a /etc/exports >> /dev/null
+sudo exports -av
 else
         echo -e "
         Pamiętaj o zmianie adresu IP oraz nasłuchiwaniu w:
