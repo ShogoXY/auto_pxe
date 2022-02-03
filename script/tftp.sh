@@ -15,4 +15,4 @@ TFTP_USERNAME=\"tftp\"
 TFTP_DIRECTORY=\"/srv/tftp\"
 TFTP_ADDRESS=\"0.0.0.0:69\"
 TFTP_OPTIONS=\"--secure\"
-" |sudo tee -a /etc/default/tftpd-hpa > /dev/null
+" |sudo tee /etc/default/tftpd-hpa > /dev/null
