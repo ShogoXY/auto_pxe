@@ -42,5 +42,5 @@ class \"httpclients\" {
       option vendor-class-identifier \"HTTPClient\";
       filename \"efi64/syslinux.efi\";
     }
-" |sudo tee -a /etc/dhcp/dhcpd.conf > /dev/null
+" |sudo tee /etc/dhcp/dhcpd.conf > /dev/null
               
