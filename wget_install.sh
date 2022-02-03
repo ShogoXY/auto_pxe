@@ -1,7 +1,58 @@
 #!/bin/bash
 #skrypt dla konfiguracji PXE
 exec > >(tee /home/$USER/log.txt)
+mkdir -p script
+cd script
+copy=./script/copy.sh
+if [ -f "$copy" ]; then
+    echo "$copy exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/copy.sh
+fi
 
+debian_install=./script/debian_install.sh
+if [ -f "$debian_install" ]; then
+    echo "$debian_install exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/debian_install.sh
+fi
+
+debian_live=./script/debian_live.sh
+if [ -f "$debian_live" ]; then
+    echo "$debian_live exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/debian_live.sh
+fi
+
+dhcp=./script/dhcp.sh
+if [ -f "$dhcp" ]; then
+    echo "$dhcp exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/dhcp.sh
+fi
+
+isc=./script/isc.sh
+if [ -f "$isc" ]; then
+    echo "$isc exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/isc.sh
+fi
+
+nmcli=./script/nmcli.sh
+if [ -f "$nmcli" ]; then
+    echo "$nmcli exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/nmcli.sh
+fi
+
+tftp=./script/tftp.sh
+if [ -f "$tftp" ]; then
+    echo "$tftp exists."
+else 
+    wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/tftp.sh
+fi
+
+cd ..
 clear
 echo -e "
 Skrypt ustawiający server PXE 
@@ -39,16 +90,6 @@ for i in `seq 1 9`;
 
 
 
-mkdir script
-cd script
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/copy.sh
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/debian_install.sh
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/debian_live.sh
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/dhcp.sh
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/isc.sh
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/nmcli.sh
-wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/tftp.sh
-cd ..
 
 sudo apt-get update
 packages=$(printf "
@@ -66,10 +107,10 @@ nfs-kernel-server")
 
 sudo apt-get -y install $packages
 
-bash ./scrip/dhcp.sh
-bash ./scrip/tftp.sh
-bash ./scrip/copy.sh
-bash ./scrip/debian_install.sh
+bash ./script/dhcp.sh
+bash ./script/tftp.sh
+bash ./script/copy.sh
+bash ./script/debian_install.sh
 
 
 
@@ -87,8 +128,8 @@ Nalezy ustawić adres:
 oraz należy ustalić na jakim porcie ma być nasłuchiwanie"
 
 
-bash ./scrip/nmcli.sh
-bash ./scrip/isc.sh
+bash ./script/nmcli.sh
+bash ./script/isc.sh
 
 
 
@@ -101,7 +142,7 @@ read -r -p " " response
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
-	bash ./scrip/debian_live.sh
+	bash ./script/debian_live.sh
 else
 	echo "Dziękuję!"
 fi
