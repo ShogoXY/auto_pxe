@@ -92,7 +92,7 @@ LABEL $folder
 	TEXT HELP
 		Live ISO of $fol - using TFTP
 	ENDTEXT
-" |sudo tee -a /srv/tftp/pxelinux.cfg/defaul >> /dev/null
+" |sudo tee -a /srv/tftp/pxelinux.cfg/default >> /dev/null
 
 ####
 #
