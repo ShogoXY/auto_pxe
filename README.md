@@ -1,4 +1,4 @@
-# Automatic PXE server for Debian 11
+# Automatic PXE server for Debian 11 with DE
 
 
 
