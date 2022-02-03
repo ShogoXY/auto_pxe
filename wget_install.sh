@@ -94,6 +94,7 @@ for i in `seq 1 9`;
 sudo apt-get update
 packages=$(printf "
 git
+lynx
 syslinux-common
 syslinux-efi
 isc-dhcp-server
