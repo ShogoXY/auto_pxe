@@ -29,7 +29,7 @@ chmod +x install.sh
 or without git just using wget
 
 ```
-wget
+wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/wget_install.sh
 chmod +x wget_install.sh
 ./wget_install.sh
 ```
