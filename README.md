@@ -19,11 +19,20 @@ What it can do:
 
 # Install
 Scrip was tested on Debian 11  
-Just download and run 
+by using git
 ```
 git clone https://github.com/ShogoXY/auto_pxe
 cd auto_pxe
+chmod +x install.sh
 ./install.sh 
 ```
+or without git just using wget
+
+```
+wget
+chmod +x wget_install.sh
+./wget_install.sh
+```
+
 >This script is in Polish language  
 >English version in progress
