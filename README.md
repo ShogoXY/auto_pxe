@@ -18,6 +18,11 @@ What it can do:
 
 
 # Install
+
+IMPORTANT!!!  
+
+*Script DELETE your curent pxelinux configuration!!!*
+
 Scrip was tested on Debian 11  
 by using git
 ```
@@ -33,6 +38,13 @@ wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/wget_install.sh
 chmod +x wget_install.sh
 ./wget_install.sh
 ```
+# other
+
+If you want use multiple Debian live ISO  
+You can use just one script  
+`./script/debian_live.sh`
+with run permission
+
 
 >This script is in Polish language  
 >English version in progress
