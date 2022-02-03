@@ -1,6 +1,5 @@
 #!/bin/bash
-echo ""
-echo ""
+
 echo "Proszę wybrać która wersja systemu ma być pobrana"
 echo ""
 a1=$(lynx -dump -listonly https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-1.*.iso'|sed "s|https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/||g"|cut -c 7-)
@@ -36,18 +35,19 @@ done
 
 
 
-sudo mkdir -p /srv/tftp/debian11
 sudo mkdir -p /srv/tftp/iso
-sudo mkdir -p /srv/tftp/iso/debian
+sudo mkdir -p /srv/tftp/iso/debian-net
+
+
 sudo mount /home/$USER/debian.iso /mnt
 
 echo -e"
 -------------------------
-kopiowanie plików
+kopiowanie plików ISO 
 -------------------------
 "
 
-sudo gcp -rf /mnt/. /srv/tftp/debian11/
+sudo rsync -ah --info=progress2 /mnt/. /srv/tftp/iso/debian-net/
 sudo umount /mnt
 sudo rm /home/$USER/debian.iso
 
@@ -58,9 +58,9 @@ UI menu.c32
 
 LABEL Debian net
         MENU LABEL ^1. Debian
-        KERNEL debian11/install.amd/vmlinuz
-        append initrd=debian11/install.amd/initrd.gz
-" | sudo tee -a /srv/tftp/pxelinux.cfg/default > /dev/null
+        KERNEL iso/debiannet/install.amd/vmlinuz
+        append initrd=iso/debian-net/install.amd/initrd.gz
+" | sudo tee /srv/tftp/pxelinux.cfg/default >> /dev/null
 
 printf "
 UI menu.c32
@@ -68,17 +68,17 @@ UI menu.c32
 #PROMPT 1 
 LABEL Debian net
         MENU LABEL ^1. Debian
-        KERNEL ::debian11/install.amd/vmlinuz
-        append initrd=::debian11/install.amd/initrd.gz
+        KERNEL ::iso/debian-net/install.amd/vmlinuz
+        append initrd=::iso/debian-net/install.amd/initrd.gz
 	TEXT HELP
 		DEBIAN by TFTP
 	ENDTEXT
 
 LABEL Debian Http
 	MENU LABEL ^2. Debian by HTTPS
-        KERNEL http://192.168.0.2/debian11/install.amd/vmlinuz
-        append initrd=http://192.168.0.2/debian11/install.amd/initrd.gz
+        KERNEL http://192.168.0.2/iso/debiannet/install.amd/vmlinuz
+        append initrd=http://192.168.0.2/iso/debian-net/install.amd/initrd.gz
 	TEXT HELP
 		Debian using HTTP server
 	ENDTEXT
-"
+" |sudo tee /srv/tftp/efi64/pxelinux.cfg/default >> /dev/null
