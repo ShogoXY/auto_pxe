@@ -76,7 +76,7 @@ LABEL Debian net
 
 LABEL Debian Http
 	MENU LABEL ^2. Debian by HTTPS
-        KERNEL http://192.168.0.2/iso/debiannet/install.amd/vmlinuz
+        KERNEL http://192.168.0.2/iso/debian-net/install.amd/vmlinuz
         append initrd=http://192.168.0.2/iso/debian-net/install.amd/initrd.gz
 	TEXT HELP
 		Debian using HTTP server
