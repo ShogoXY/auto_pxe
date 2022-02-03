@@ -6,6 +6,7 @@
 #
 ####
 
+
 echo -e "
 Proszę wybrać obraz ISO z listy poniżej.
 Program automatycznie pobierze obraz,
@@ -50,14 +51,15 @@ sudo mkdir -p /srv/tftp/iso/$folder
 sudo umount /mnt
 sudo mount $usun /mnt
 sudo apt-get install gcp -y
-sudo gcp -rf /mnt/. /srv/tftp/iso/$folder
+sudo rsync -ah --info=progress2 /mnt/* /srv/tftp/iso/$folder
 
 vm=$(ls /mnt/live/ |grep vmlinuz)
 ini=$(ls /mnt/live/ |grep initrd)
 #echo $vm
 #echo $ini
 sudo umount /mnt
-
+printf "/srv/tftp/iso/$folder	192.168.0.0/24(ro,no_root_squash,no_subtree_check)" |sudo tee -a /etc/exports >> /dev/null
+sudo exports -av
 
 echo "plik został rozpakowany do folderu /srv/tftp/iso/$folder"
 echo ""
@@ -89,7 +91,7 @@ LABEL $folder
 	TEXT HELP
 		Live ISO of $fol - using TFTP
 	ENDTEXT
-" >> /srv/tftp/pxelinux.cfg/defaul
+" |sudo tee -a /srv/tftp/pxelinux.cfg/defaul >> /dev/null
 
 ####
 #
@@ -105,4 +107,4 @@ LABEL $folder
 	TEXT HELP
 		$fol Live ISO using HTTP
 	ENDTEXT
-" >> /srv/tftp/efi64/pxelinux.cfg/default
+" |sudo tee -a /srv/tftp/efi64/pxelinux.cfg/default >> /dev/null
