@@ -3,49 +3,49 @@
 exec > >(tee /home/$USER/log.txt)
 mkdir -p script
 cd script
-copy=./script/copy.sh
+copy=./copy.sh
 if [ -f "$copy" ]; then
     echo "$copy exists."
 else 
     wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/copy.sh
 fi
 
-debian_install=./script/debian_install.sh
+debian_install=./debian_install.sh
 if [ -f "$debian_install" ]; then
     echo "$debian_install exists."
 else 
     wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/debian_install.sh
 fi
 
-debian_live=./script/debian_live.sh
+debian_live=./debian_live.sh
 if [ -f "$debian_live" ]; then
     echo "$debian_live exists."
 else 
     wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/debian_live.sh
 fi
 
-dhcp=./script/dhcp.sh
+dhcp=./dhcp.sh
 if [ -f "$dhcp" ]; then
     echo "$dhcp exists."
 else 
     wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/dhcp.sh
 fi
 
-isc=./script/isc.sh
+isc=./isc.sh
 if [ -f "$isc" ]; then
     echo "$isc exists."
 else 
     wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/isc.sh
 fi
 
-nmcli=./script/nmcli.sh
+nmcli=./nmcli.sh
 if [ -f "$nmcli" ]; then
     echo "$nmcli exists."
 else 
     wget https://raw.githubusercontent.com/ShogoXY/auto_pxe/main/script/nmcli.sh
 fi
 
-tftp=./script/tftp.sh
+tftp=./tftp.sh
 if [ -f "$tftp" ]; then
     echo "$tftp exists."
 else 
