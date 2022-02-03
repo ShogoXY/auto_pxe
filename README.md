@@ -5,6 +5,10 @@
 Bash scrip what create PXE server on Debian 11  
 It create full server for Legacy and UEFI
 
+IMPORTANT!!!  
+
+**Script DELETE your curent pxelinux configuration!!!**
+
 What it can do:
 * auto set the static IP (you can back to DHCP with one of the scrip `nmcli.sh`)
 * auto install dependency
@@ -19,9 +23,7 @@ What it can do:
 
 # Install
 
-IMPORTANT!!!  
 
-*Script DELETE your curent pxelinux configuration!!!*
 
 Scrip was tested on Debian 11  
 by using git
@@ -43,7 +45,7 @@ chmod +x wget_install.sh
 If you want use multiple Debian live ISO  
 You can use just one script  
 `./script/debian_live.sh`
-with run permission
+with 'run' permission
 
 
 >This script is in Polish language  
