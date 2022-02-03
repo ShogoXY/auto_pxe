@@ -103,7 +103,7 @@ INTERFACESv6=\"\"
 sudo sed -i -e 's|/var/www/html"|/srv/tftp"|g' /etc/lighttpd/lighttpd.conf    
 sudo sed -i -e 's/RPCMOUNTDOPTS/#RPCMOUNTDOPTS/g' /etc/default/nfs-kernel-server
 sudo sed -i -e '/#RPCMOUNTDOPTS/a RPCMOUNTDOPTS="-p 40000"' /etc/default/nfs-kernel-server
-printf "/srv/tftp/iso/debian	192.168.0.0/24(ro,no_root_squash,no_subtree_check)
+printf "/srv/tftp/iso/debian-net	192.168.0.0/24(ro,no_root_squash,no_subtree_check)
 " |sudo tee -a /etc/exports >> /dev/null
 sudo exportfs -av
 else
