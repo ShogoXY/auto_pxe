@@ -27,14 +27,9 @@ else
     sudo cp /etc/network/interfaces /etc/network/interfaces.bak
 fi
 
-auto $nn
 
-printf "
-iface $nn inet static
-address 192.168.0.2
-gateway 192.168.0.0
-netmask 255.255.255.0
-" |sudo tee /etc/network/interfaces >> /dev/null
+sudo sed -i -e -z 's/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.0/g' /etc/network/interfaces    
+
 
 echo ""
 echo "adres zmieniony"
