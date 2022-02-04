@@ -28,6 +28,9 @@ do
 	
 
 	nn=$(basename -a /sys/class/net/*|sed -n "$nr"p)
+	echo ""
+	echo "wybrałeś kartę sieciową $nn"
+	sleep 3
 else
 	echo "Podaj cyfrę od 1 do $count"
 	continue
@@ -48,7 +51,7 @@ Czy chcesz to zrobić teraz ? [y/N]
 ----------------------------
 "
 
-reaad -r -p response
+read -r -p response
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
@@ -65,7 +68,7 @@ else
 fi
 
 
-sudo sed -i -e -z "s/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.2550/g" /etc/network/interfaces    
+sudo sed -i -z "s/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.255.0/g" /etc/network/interfaces    
 
 
 echo ""
@@ -129,7 +132,7 @@ sudo ifup $nn
         echo "/etc/default/isc-dhcp-server"
         echo ""
 		
-		sudo sed -i -e -z "s/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.2550/iface $nn inet dhcp/g" /etc/network/interfaces    
+		sudo sed -i -z "s/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.255.0/iface $nn inet dhcp/g" /etc/network/interfaces    
 		cat /etc/network/interfaces
 		sudo ifdown $nn
 	echo ""
