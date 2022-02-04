@@ -89,15 +89,13 @@ Kopiowanie niezbędnych plików
 ------------------------
 "
 bash ./script/copy.sh
+
 echo -e "
 ------------------------
 Pobieranie obrazu ISO
 ------------------------
 "
 bash ./script/debian_install.sh
-
-
-
 
 
 echo -e "
@@ -112,10 +110,9 @@ echo "Czy chcesz pobrać obraz Live Debian "
 echo "i dodać go do serwera PXE? [y/N] "
 
 
-
-while read -r -p " " response
+while read -r -p " " debiso
 do
-if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
+if [[ "$debiso" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
 	bash ./script/debian_live.sh
 	
