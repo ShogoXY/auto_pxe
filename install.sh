@@ -37,7 +37,7 @@ printf "
 syslinux-common		lynx
 syslinux-efi		network-manager
 isc-dhcp-server		rsync
-tftpd-hpa		gcp
+tftpd-hpa		
 pxelinux
 lighttpd
 nfs-kernel-server
@@ -64,7 +64,6 @@ tftpd-hpa
 pxelinux
 network-manager
 rsync
-gcp
 lighttpd
 nfs-kernel-server")
 
