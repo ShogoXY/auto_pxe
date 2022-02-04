@@ -19,9 +19,9 @@ basename -a /sys/class/net/*|cat -b
 
 echo ""
 echo -e "\n Podaj numer \n"
-while read -r nn
+while read -r nr
 do
-	if [ "$nn" -le "$count" ] && [ "$nn" -gt "$zero" ]; then
+	if [ "$nr" -le "$count" ] && [ "$nr" -gt "$zero" ]; then
 
 	echo "Podaj numer"
 	echo ""
