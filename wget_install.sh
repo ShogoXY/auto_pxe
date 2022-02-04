@@ -82,6 +82,19 @@ echo -e "
 Za chwilę nastąpi instalacja niezbędnych składników
 ------------------------
 "
+
+printf "
+----Niezbędne----	----Dodatkowe----
+syslinux-common		lynx
+syslinux-efi		network-manager
+isc-dhcp-server		rsync
+tftpd-hpa		gcp
+pxelinux
+lighttpd
+nfs-kernel-server
+
+
+"
 for i in `seq 1 9`;
         do
                 echo -ne "   $i..." \\r
