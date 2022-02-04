@@ -1,33 +1,33 @@
 #!/bin/bash
 
-printf "
+####
+#
+# script for download live iso of Debian every variant form current debian page
+#
+####
 
------------------------------
 
-Ustawienie adresu statycznego na karcie sieciowej
-
------------------------------
+echo -e "
+Proszę wybrać obraz ISO z listy poniżej.
+Program automatycznie pobierze obraz,
+a następnie automatycznie rozpakuje go do folder /srv/tftp/iso/ 
+oraz automatycznie doda pozycję wyboru w PXE Menu dla legacy jak i UEFI.
 "
 
-count=$(basename -a /sys/class/net/*|cat -b|wc -l)
+
+
+lynx -dump -listonly https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-11.2.0-amd64-.*.iso'|sed "s|https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/||g"|cut -c 7-|cat -b
+count=$(lynx -dump -listonly https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-11.2.0-amd64-.*.iso'|sed "s|https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/||g"|cut -c 7-|wc -l)
 
 zero=0
-echo ""
-echo "Proszę wybrać kartę sieciową podając jej numer"
-echo ""
-basename -a /sys/class/net/*|cat -b
 
-echo ""
 echo -e "\n Podaj numer \n"
-while read -r nn
+while read -r iso
 do
-	if [ "$nn" -le "$count" ] && [ "$nn" -gt "$zero" ]; then
+	if [ "$iso" -le "$count" ] && [ "$iso" -gt "$zero" ]; then
 
-	echo "Podaj numer"
-	echo ""
-	
+link=$(lynx -dump -listonly https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-11.2.0-amd64-.*.iso'|cut -c 7-|sed -n "$iso"p)
 
-	nn=$(basename -a /sys/class/net/*|sed -n "$nr"p)
 else
 	echo "Podaj cyfrę od 1 do $count"
 	continue
@@ -37,105 +37,75 @@ done
 
 
 
+#echo $link
+wget $link
 
-printf "
-----------------------------
+ 
+usun=$(lynx -dump -listonly https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-11.2.0-amd64-.*.iso'|sed "s|https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/||g"|cut -c 7-|sed -n "$iso"p)
 
-Czy chcesz zmienić adres karty sieciowej?
-Może to powodować błędy
-Czy chcesz to zrobić teraz ? [y/N]
+folder=$(echo $usun|rev|cut -c 5-|rev|sed "s|-live-11.2.0-amd64||g")
 
-----------------------------
-"
+#echo $folder
 
-reaad -r -p response
+sudo mkdir -p /srv/tftp/iso/$folder
+sudo umount /mnt
+sudo mount $usun /mnt
+sudo apt-get install gcp -y
+sudo rsync -ah --info=progress2 /mnt/* /srv/tftp/iso/$folder
 
-if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
-then
+vm=$(ls /mnt/live/ |grep vmlinuz)
+ini=$(ls /mnt/live/ |grep initrd)
+#echo $vm
+#echo $ini
+sudo umount /mnt
+printf "/srv/tftp/iso/$folder	192.168.0.0/24(ro,no_root_squash,no_subtree_check)
+" |sudo tee -a /etc/exports >> /dev/null
+sudo exports -av
 
-
-	
-
-inter=/etc/default/isc-dhcp-server.bak
-if [ -f "$inter" ]; then
-    echo "$inter exists."
-else 
-    echo "$inter does not exist. Create Copy"
-    sudo cp /etc/network/interfaces /etc/network/interfaces.bak
-fi
-
-
-sudo sed -i -e -z "s/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.2550/g" /etc/network/interfaces    
-
-
+echo "plik został rozpakowany do folderu /srv/tftp/iso/$folder"
 echo ""
-echo "adres zmieniony"
-echo ""
-cat /etc/network/interfaces
-echo ""
-echo "###########################################################"
-echo ""
-echo "pamiętaj by ustawić port nasłuchiwania w"
-echo ""
-echo "/etc/default/isc-dhcp-server"
-echo ""
-echo "Czy chcesz zrobić to teraz? [y/N] "
+echo "czy chcesz usunąć plik ISO? [y/N]"
+
 read -r -p " " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
-   then
-
-
-FILE=/etc/default/isc-dhcp-server.bak
-if [ -f "$FILE" ]; then
-    echo "$FILE exists."
-else 
-    echo "$FILE does not exist. Create Copy"
-    sudo cp /etc/default/isc-dhcp-server /etc/default/isc-dhcp-server.bak
+then
+	sudo rm $usun
+else
+	echo "plik nie został usunięty"
 fi
 
+fol=$(echo "${folder^^}" |sed "s/-/ /g")
+#echo $fol
 
 
+####
+#
+#add to legacy menu
+#
+####
 
-printf "
-# Defaults for isc-dhcp-server (sourced by /etc/init.d/isc-dhcp-server)
-# Path to dhcpd's config file (default: /etc/dhcp/dhcpd.conf).
-#DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
-#DHCPDv6_CONF=/etc/dhcp/dhcpd6.conf
-# Path to dhcpd's PID file (default: /var/run/dhcpd.pid).
-#DHCPDv4_PID=/var/run/dhcpd.pid
-#DHCPDv6_PID=/var/run/dhcpd6.pid
-# Additional options to start dhcpd with.
-#	Don't use options -cf or -pf here; use DHCPD_CONF/ DHCPD_PID instead
-#OPTIONS=\"\"
-# On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
-#	Separate multiple interfaces with spaces, e.g. \"eth0 eth1\".
-INTERFACESv4=\"$nn\"
-INTERFACESv6=\"\"
-" |sudo tee /etc/default/isc-dhcp-server >> /dev/null
+echo -e " 
+LABEL $folder 
+	MENU LABEL ^$fol
+	KERNEL iso/$folder/live/$vm
+	APPEND initrd=iso/$folder/live/$ini nfsroot=192.168.0.2:/srv/tftp/iso/$folder/ ro netboot=nfs vga=0x317 boot=live ip=dhcp ---
+	TEXT HELP
+		Live ISO of $fol - using TFTP
+	ENDTEXT
+" |sudo tee -a /srv/tftp/pxelinux.cfg/default >> /dev/null
 
-sudo cat /etc/default/isc-dhcp-server |tail -4
+####
+#
+#add to UEFI menu
+#
+####
 
-sudo ifdown $nn
-echo ""
-sleep 5
-sudo ifup $nn
-
-   fi
-
-    else
-        echo ""
-        echo " Pamiętaj o zmianie adresu IP oraz nasłuchiwaniu w:"
-        echo ""
-        echo "/etc/default/isc-dhcp-server"
-        echo ""
-		
-		sudo sed -i -e -z "s/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.2550/iface $nn inet dhcp/g" /etc/network/interfaces    
-		cat /etc/network/interfaces
-		sudo ifdown $nn
-	echo ""
-	sleep 5
-	sudo ifup $nn
-	
-		
-fi
-
+echo -e "
+LABEL $folder
+	MENU LABEL ^$fol
+	KERNEL http://192.168.0.2/iso/$folder/live/$vm
+	APPEND initrd=http://192.168.0.2/iso/$folder/live/$ini nfsroot=192.168.0.2:/srv/tftp/iso/$folder/ ro netboot=nfs boot=live ip=dhcp ---
+	TEXT HELP
+		$fol Live ISO using HTTP
+	ENDTEXT
+" |sudo tee -a /srv/tftp/efi64/pxelinux.cfg/default >> /dev/null
