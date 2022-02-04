@@ -1,23 +1,60 @@
 #!/bin/bash
 
+printf "
 
+-----------------------------
+
+Ustawienie adresu statycznego na karcie sieciowej
+
+-----------------------------
+"
+
+count=$(basename -a /sys/class/net/*|cat -b|wc -l)
+
+zero=0
+echo ""
+echo "Proszę wybrać kartę sieciową podając jej numer"
+echo ""
+basename -a /sys/class/net/*|cat -b
+
+echo ""
+echo -e "\n Podaj numer \n"
+while read -r nn
+do
+	if [ "$nn" -le "$count" ] && [ "$nn" -gt "$zero" ]; then
+
+	echo "Podaj numer"
+	echo ""
+	
+
+	nn=$(basename -a /sys/class/net/*|sed -n "$nr"p)
+else
+	echo "Podaj cyfrę od 1 do $count"
+	continue
+fi
+break
+done
+
+
+
+
+printf "
+----------------------------
+
+Czy chcesz zmienić adres karty sieciowej?
+Może to powodować błędy
+Czy chcesz to zrobić teraz ? [y/N]
+
+----------------------------
+"
+
+reaad -r -p response
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
 
 
-	echo ""
-	echo "proszę wybrać kartę sieciową podając jej numer"
-	echo ""
-	basename -a /sys/class/net/*|cat -b
-
-	echo ""
-	echo "Podaj numer"
-	echo ""
-	read -p "" nr
-
-	nn=$(basename -a /sys/class/net/*|sed -n "$nr"p)
-
+	
 
 inter=/etc/default/isc-dhcp-server.bak
 if [ -f "$inter" ]; then
@@ -28,7 +65,7 @@ else
 fi
 
 
-sudo sed -i -e -z 's/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.0/g' /etc/network/interfaces    
+sudo sed -i -e -z "s/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.2550/g" /etc/network/interfaces    
 
 
 echo ""
@@ -77,6 +114,12 @@ INTERFACESv6=\"\"
 " |sudo tee /etc/default/isc-dhcp-server >> /dev/null
 
 sudo cat /etc/default/isc-dhcp-server |tail -4
+
+sudo ifdown $nn
+echo ""
+sleep 5
+sudo ifup $nn
+
    fi
 
     else
@@ -85,10 +128,14 @@ sudo cat /etc/default/isc-dhcp-server |tail -4
         echo ""
         echo "/etc/default/isc-dhcp-server"
         echo ""
+		
+		sudo sed -i -e -z "s/iface $nn inet static\naddress 192.168.0.2\ngateway 192.168.0.0\nnetmask 255.255.2550/iface $nn inet dhcp/g" /etc/network/interfaces    
+		cat /etc/network/interfaces
+		sudo ifdown $nn
+	echo ""
+	sleep 5
+	sudo ifup $nn
+	
+		
 fi
 
-
-sudo ifdown $nn
-echo ""
-sleep 5
-sudo ifup $nn
