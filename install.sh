@@ -133,10 +133,15 @@ Nalezy ustawić adres:
 oraz należy ustalić na jakim porcie ma być nasłuchiwanie"
 
 
-bash ./script/nmcli.sh
+de=$(echo $DESKTOP_SESSION)
 
 
-
+if [[ "$de" != "" ]]
+then
+	bash ./script/nmcli.sh
+else
+	bash ./script/interfaces.sh
+fi
 
 
 echo ""
