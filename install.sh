@@ -65,6 +65,7 @@ pxelinux
 network-manager
 rsync
 lighttpd
+lynx
 nfs-kernel-server")
 
 
