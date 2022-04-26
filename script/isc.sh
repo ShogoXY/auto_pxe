@@ -3,11 +3,12 @@
 printf "
 ###########################################################
 
-pamiętaj by ustawić port nasłuchiwania w
+Do not forget to determinate the port you want to listen 
+you can do that editing the file: 
 
 /etc/default/isc-dhcp-server
 
-Czy chcesz zrobić to teraz? [y/N] "
+Do you want to do that right now? [y/N] "
 read -r -p " " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
@@ -50,8 +51,9 @@ printf "/srv/tftp/iso/debian-net	192.168.0.0/24(ro,no_root_squash,no_subtree_che
 sudo exports -av
 else
         echo -e "
-        Pamiętaj o zmianie adresu IP oraz nasłuchiwaniu w:
-        
+        Do not forget to set IP addres and determinate the port you want to listen 
+        you can do that editing the file: 
+                
         /etc/default/isc-dhcp-server
         "
 fi
