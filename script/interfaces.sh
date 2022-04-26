@@ -4,7 +4,7 @@ printf "
 
 -----------------------------
 
-Ustawienie adresu statycznego na karcie sieciowej
+Set the static addres on network card
 
 -----------------------------
 "
@@ -13,26 +13,26 @@ count=$(basename -a /sys/class/net/*|cat -b|wc -l)
 
 zero=0
 echo ""
-echo "Proszę wybrać kartę sieciową podając jej numer"
+echo "Select the network card by choosing the number"
 echo ""
 basename -a /sys/class/net/*|cat -b
 
 echo ""
-echo -e "\n Podaj numer \n"
+echo -e "\n Choose number \n"
 while read -r nr
 do
 	if [ "$nr" -le "$count" ] && [ "$nr" -gt "$zero" ]; then
 
-	echo "Podaj numer"
+	echo "Choose number"
 	echo ""
 	
 
 	nn=$(basename -a /sys/class/net/*|sed -n "$nr"p)
 	echo ""
-	echo "wybrałeś kartę sieciową $nn"
+	echo "You select the netowrk card $nn"
 	sleep 3
 else
-	echo "Podaj cyfrę od 1 do $count"
+	echo "Please select number from 1 to $count"
 	continue
 fi
 break
@@ -44,9 +44,9 @@ done
 printf "
 ----------------------------
 
-Czy chcesz zmienić adres karty sieciowej?
-Może to powodować błędy
-Czy chcesz to zrobić teraz ? [y/N]
+Dou you want to change the network card address?
+It could provide some issues
+Do you want to do that right now? [y/N]
 
 ----------------------------
 "
@@ -72,17 +72,18 @@ sudo sed -i -z "s/iface $nn inet dhcp/iface $nn inet static\naddress 192.168.0.2
 
 
 echo ""
-echo "adres zmieniony"
+echo "Address changed"
 echo ""
 cat /etc/network/interfaces
 echo ""
 echo "###########################################################"
 echo ""
-echo "pamiętaj by ustawić port nasłuchiwania w"
+echo "remember to determine the port for listening "
+echo "you can do that editing file:"
 echo ""
 echo "/etc/default/isc-dhcp-server"
 echo ""
-echo "Czy chcesz zrobić to teraz? [y/N] "
+echo "Do you want to do that automatically right now? [y/N] "
 read -r -p " " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
    then
@@ -134,7 +135,7 @@ sudo ifup $nn
 
     else
         echo ""
-        echo " Pamiętaj o zmianie adresu IP oraz nasłuchiwaniu w:"
+        echo "Remember to set the IP addres and determine the port for listening:"
         echo ""
         echo "/etc/default/isc-dhcp-server"
         echo ""
