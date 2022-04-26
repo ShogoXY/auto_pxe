@@ -170,9 +170,13 @@ printf "
 
 script log saved in /home/$USER/log.txt
 
-To edit PXE menu you can use :
+To edit PXE menu you can use links below:
+for UEFI:
 /srv/tftp/uefi_menu_edit
-and
+
+and 
+
+for LEGACY
 /srv/tftp/bios_menu_edit
 "
 sudo systemctl restart lighttpd.service 
