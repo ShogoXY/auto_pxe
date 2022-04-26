@@ -48,5 +48,6 @@ You can use just one script
 with 'run' permission
 
 
->This script is in Polish language  
->English version in progress
+>This script is createt in Polish language  
+>I translate it to English version
+>it could be some language mistakes
