@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Proszę wybrać która wersja systemu ma być pobrana"
+echo "Please cgose what version should be downloaded"
 echo ""
 a1=$(lynx -dump -listonly https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/ |uniq -f 1|grep 'https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-1.*.iso'|sed "s|https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/||g"|cut -c 7-)
 
@@ -13,7 +13,7 @@ link2=$(lynx -dump -listonly https://cdimage.debian.org/cdimage/unofficial/non-f
 echo -e "\t 1 " $a1 
 echo -e "\t 2 " $a2
 echo ""
-echo "Podaj wartość 1 lub 2"
+echo "Please choose 1 or 2"
 
 while read -r deb
 do
@@ -27,7 +27,7 @@ elif [[ "$deb" == "2" ]]
 then
 wget -O /home/$USER/debian.iso $link2
 else
-	echo "proszę podać odpowiednią wartość 1 lub 2"
+	echo "Please choose 1 or 2"
 	continue
 fi
 break
@@ -43,7 +43,7 @@ sudo mount /home/$USER/debian.iso /mnt
 
 echo -e"
 -------------------------
-kopiowanie plików ISO 
+Copy ISO file 
 -------------------------
 "
 
