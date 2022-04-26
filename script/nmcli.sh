@@ -1,23 +1,23 @@
 #!/bin/bash
 
 echo ""
-echo "Czy chcesz automatycznie nadać adres statyczny"
-echo "na adres 192.168.0.2"
-echo "jeśli nie, script ustawi DHCP"
+echo "Do you want to set static addres automatically"
+echo "to address 192.168.0.2"
+echo "If you select scrip set the DHCP"
 
 
-echo "Jesteś pewien? [y/N] "
+echo "Are you sure? [y/N] "
 read -r -p " " response
 
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
 	echo ""
-	echo "proszę wybrać kartę sieciową podając jej numer"
+	echo "Please select network card by choosing the number"
 	echo ""
 	nmcli -t -f DEVICE,NAME c show |cat -b
 	echo ""
-	echo "Podaj numer"
+	echo "Select number"
 	echo ""
 	read -p "" nr
 	nn=$(nmcli -t -f NAME c show  |sed -n "$nr"p)
@@ -35,12 +35,12 @@ then
 	nmcli connection down "$nn"; nmcli connection up "$nn"
 else
 	echo ""
-	echo "proszę wybrać kartę sieciową podając jej numer"
-	echo "by zmienić ustawienia karty na DHCP"
+	echo "Please select network card by choosing the number"
+	echo "to set setting to DHCP"
 	echo ""
 	nmcli -t -f NAME c show |cat -b
 	echo ""
-	echo "Podaj numer"
+	echo "Select number"
 	echo ""
 	read -p "" nr
 	nn=$(nmcli -t -f NAME c show  |sed -n "$nr"p)
@@ -60,11 +60,11 @@ fi
 printf "
 ###########################################################
 
-pamiętaj by ustawić port nasłuchiwania w
-
+Remember to determinate the port for listening
+by editing the file:
 /etc/default/isc-dhcp-server
 
-Czy chcesz zrobić to teraz? [y/N] "
+Do you want to do that automatically right now? [y/N] "
 read -r -p " " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]|[tT])$ ]]
 then
@@ -108,7 +108,7 @@ printf "/srv/tftp/iso/debian-net	192.168.0.0/24(ro,no_root_squash,no_subtree_che
 sudo exportfs -av
 else
         echo -e "
-        Pamiętaj o zmianie adresu IP oraz nasłuchiwaniu w:
+        DO not forget set IP address and determinate port for listening:
         
         /etc/default/isc-dhcp-server
         "
