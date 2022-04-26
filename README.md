@@ -49,5 +49,5 @@ with 'run' permission
 
 
 >This script is createt in Polish language  
->I translate it to English version
+>I translate it to English version  
 >it could be some language mistakes
